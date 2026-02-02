@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx create-next-app:*)"
+      "Bash(npx create-next-app:*)",
+      "Bash(gh issue create --repo flyboy85749/Bottled-Arizona-Sunshine --title \"Stripe payment integration\" --body \"$\\(cat <<''EOF''\n## Summary\nIntegrate Stripe as a payment processor for the order flow.\n\n## Tasks\n- [ ] Install Stripe SDK \\(`stripe` and `@stripe/stripe-js`\\)\n- [ ] Add environment variables for Stripe keys \\(`.env.local`\\)\n- [ ] Create API route to create a Stripe Checkout Session\n- [ ] Redirect order form submission to Stripe Checkout\n- [ ] Create success/cancel pages for post-checkout redirect\n- [ ] Set up Stripe webhook endpoint to handle payment confirmation\n- [ ] Update order form to validate required fields before submission\n- [ ] Test end-to-end in Stripe test mode\n\n## Notes\n- Current order form shows a demo alert on submit — this will be replaced with real checkout\n- Pricing: Single $12.95, 4-Pack $29.95, 12-Pack $79.95\n- Shipping: $5.95 for single bottles, free on 4-pack+\nEOF\n\\)\")"
     ]
   }
 }

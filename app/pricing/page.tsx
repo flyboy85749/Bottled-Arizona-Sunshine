@@ -84,14 +84,14 @@ export default function PricingPage() {
 
       {/* Pricing Cards */}
       <section className="pt-16 pb-24 px-8 bg-white relative">
-        <div className="absolute top-0 left-0 right-0 h-[100px] bg-gradient-to-b from-warm-cream to-white" />
-        <div className="max-w-[1100px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 relative max-md:grid-cols-1 max-md:max-w-[400px]">
+        <div className="absolute top-0 left-0 right-0 h-25 bg-linear-to-b from-warm-cream to-white" />
+        <div className="max-w-275 mx-auto grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 relative max-md:grid-cols-1 max-md:max-w-100">
           {tiers.map((tier) => (
             <div
               key={tier.name}
               className={`bg-warm-cream rounded-[20px] p-10 border-2 shadow-[0_10px_40px_rgba(0,0,0,0.04)] flex flex-col items-center text-center relative hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(232,115,74,0.12)] hover:border-golden transition-all ${
                 tier.featured
-                  ? "border-sunset-orange bg-gradient-to-b from-[#fff9f0] to-warm-cream shadow-[0_20px_60px_rgba(232,115,74,0.15)]"
+                  ? "border-sunset-orange bg-linear-to-b from-[#fff9f0] to-warm-cream shadow-[0_20px_60px_rgba(232,115,74,0.15)]"
                   : "border-desert-sand"
               }`}
             >
@@ -101,15 +101,26 @@ export default function PricingPage() {
                 </div>
               )}
               <div className="text-[2.5rem] mb-4">{tier.icon}</div>
-              <h3 className="font-playfair text-2xl mb-1 text-charcoal font-semibold">{tier.name}</h3>
+              <h3 className="font-playfair text-2xl mb-1 text-charcoal font-semibold">
+                {tier.name}
+              </h3>
               <p className="text-[0.9rem] text-muted mb-6">{tier.subtitle}</p>
               <div className="mb-6">
-                <span className="font-playfair text-[2.75rem] font-bold text-charcoal">{tier.price}</span>
-                {tier.priceNote && <span className="block text-[0.85rem] text-sage font-semibold mt-1">{tier.priceNote}</span>}
+                <span className="font-playfair text-[2.75rem] font-bold text-charcoal">
+                  {tier.price}
+                </span>
+                {tier.priceNote && (
+                  <span className="block text-[0.85rem] text-sage font-semibold mt-1">
+                    {tier.priceNote}
+                  </span>
+                )}
               </div>
               <div className="w-full mb-8 border-t-2 border-desert-sand">
                 {tier.rows.map(([label, value]) => (
-                  <div key={label} className="flex justify-between py-3 border-b border-desert-sand text-[0.95rem]">
+                  <div
+                    key={label}
+                    className="flex justify-between py-3 border-b border-desert-sand text-[0.95rem]"
+                  >
                     <span className="font-medium text-muted">{label}</span>
                     <span className="font-semibold text-charcoal">{value}</span>
                   </div>
@@ -132,15 +143,24 @@ export default function PricingPage() {
 
       {/* Extras */}
       <section className="py-24 px-8 bg-warm-cream">
-        <div className="text-center max-w-[600px] mx-auto mb-16">
-          <h2 className="font-playfair text-[clamp(2rem,4vw,2.75rem)] mb-4 text-charcoal font-semibold">Every Bottle Includes</h2>
-          <p className="text-muted text-[1.1rem]">No hidden fees. No surprise clouds. Just pure sunshine.</p>
+        <div className="text-center max-w-150 mx-auto mb-16">
+          <h2 className="font-playfair text-[clamp(2rem,4vw,2.75rem)] mb-4 text-charcoal font-semibold">
+            Every Bottle Includes
+          </h2>
+          <p className="text-muted text-[1.1rem]">
+            No hidden fees. No surprise clouds. Just pure sunshine.
+          </p>
         </div>
-        <div className="max-w-[800px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 max-md:grid-cols-2">
+        <div className="max-w-200 mx-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 max-md:grid-cols-2">
           {extras.map((e) => (
-            <div key={e.text} className="bg-white p-6 rounded-2xl text-center shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-transparent hover:-translate-y-1 hover:border-golden hover:shadow-[0_15px_40px_rgba(232,115,74,0.1)] transition-all">
+            <div
+              key={e.text}
+              className="bg-white p-6 rounded-2xl text-center shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-transparent hover:-translate-y-1 hover:border-golden hover:shadow-[0_15px_40px_rgba(232,115,74,0.1)] transition-all"
+            >
               <span className="text-[2rem] block mb-3">{e.icon}</span>
-              <p className="text-[0.9rem] font-medium text-charcoal">{e.text}</p>
+              <p className="text-[0.9rem] font-medium text-charcoal">
+                {e.text}
+              </p>
             </div>
           ))}
         </div>
@@ -148,8 +168,15 @@ export default function PricingPage() {
 
       {/* Bulk callout */}
       <WarningCard icon="💡" title="Bulk & Corporate Orders">
-        Need sunshine for your whole team? We offer custom bulk pricing for corporate gifts, wellness programs, and subscription boxes.{" "}
-        <a href="mailto:hello@bottledarizonasunshine.com" className="text-sunset-orange underline">Contact us</a> for a custom quote.
+        Need sunshine for your whole team? We offer custom bulk pricing for
+        corporate gifts, wellness programs, and subscription boxes.{" "}
+        <a
+          href="mailto:hello@bottledarizonasunshine.com"
+          className="text-sunset-orange underline"
+        >
+          Contact us
+        </a>{" "}
+        for a custom quote.
       </WarningCard>
 
       <CTASection

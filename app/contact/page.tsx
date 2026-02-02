@@ -21,8 +21,8 @@ export default function ContactPage() {
 
       {/* Contact Form */}
       <section className="pt-16 pb-24 px-8 bg-white relative">
-        <div className="absolute top-0 left-0 right-0 h-[100px] bg-gradient-to-b from-warm-cream to-white" />
-        <div className="max-w-[700px] mx-auto bg-warm-cream rounded-[20px] p-12 border-2 border-desert-sand shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative max-md:px-6 max-md:py-8">
+        <div className="absolute top-0 left-0 right-0 h-25 bg-linear-to-b from-warm-cream to-white" />
+        <div className="max-w-175 mx-auto bg-warm-cream rounded-[20px] p-12 border-2 border-desert-sand shadow-[0_20px_60px_rgba(0,0,0,0.06)] relative max-md:px-6 max-md:py-8">
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1">
               <div className="flex flex-col gap-2">
@@ -42,8 +42,8 @@ export default function ContactPage() {
 
             <div className="flex flex-col gap-2">
               <label htmlFor="subject" className="font-semibold text-[0.9rem] text-charcoal">Subject</label>
-              <select id="subject" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all">
-                <option value="" disabled selected>What&apos;s this about?</option>
+              <select id="subject" defaultValue="" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all">
+                <option value="" disabled>What&apos;s this about?</option>
                 <option value="general">General Inquiry</option>
                 <option value="order">Order Question</option>
                 <option value="bulk">Bulk / Corporate Orders</option>
@@ -55,7 +55,7 @@ export default function ContactPage() {
 
             <div className="flex flex-col gap-2">
               <label htmlFor="message" className="font-semibold text-[0.9rem] text-charcoal">Message</label>
-              <textarea id="message" placeholder="Tell us what's on your mind..." required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all resize-y min-h-[100px]" />
+              <textarea id="message" placeholder="Tell us what's on your mind..." required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all resize-y min-h-25" />
             </div>
 
             <button type="submit" className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 bg-sunset-orange text-white rounded-full font-semibold text-[1.05rem] border-none cursor-pointer hover:bg-terracotta hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(232,115,74,0.3)] transition-all">
@@ -71,11 +71,11 @@ export default function ContactPage() {
 
       {/* Contact Info */}
       <section className="py-24 px-8 bg-warm-cream">
-        <div className="text-center max-w-[600px] mx-auto mb-16">
+        <div className="text-center max-w-150 mx-auto mb-16">
           <h2 className="font-playfair text-[clamp(2rem,4vw,2.75rem)] mb-4 text-charcoal font-semibold">Other Ways to Reach Us</h2>
           <p className="text-muted text-[1.1rem]">Pick your preferred ray of communication.</p>
         </div>
-        <div className="max-w-[800px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 max-md:grid-cols-2">
+        <div className="max-w-200 mx-auto grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-6 max-md:grid-cols-2">
           {[
             { icon: "📧", text: "Email Us at:", link: { href: "mailto:hello@bottledarizonasunshine.com", label: "Hello Sunshine!" } },
             { icon: "📍", text: "Tucson, Arizona" },

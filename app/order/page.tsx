@@ -16,6 +16,17 @@ function OrderForm() {
   const searchParams = useSearchParams();
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+  const [phone, setPhone] = useState("");
+  const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const preselect = searchParams.get("product");
@@ -29,9 +40,33 @@ function OrderForm() {
   const shipping = item ? (item.freeShipping ? 0 : shippingCost * quantity) : 0;
   const total = subtotal + shipping;
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    alert("Thank you for your order! ☀️\n\nThis is a demo form. In production, this would proceed to secure payment processing.");
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product,
+          quantity,
+          customer: { firstName, lastName, email, address, city, state, zip, phone, notes },
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.url) {
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      window.location.href = data.url;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to start checkout");
+      setLoading(false);
+    }
   }
 
   return (
@@ -59,49 +94,49 @@ function OrderForm() {
           <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1">
             <div className="flex flex-col gap-2">
               <label htmlFor="firstName" className="font-semibold text-[0.9rem] text-charcoal">First Name</label>
-              <input type="text" id="firstName" placeholder="Jane" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+              <input type="text" id="firstName" placeholder="Jane" required value={firstName} onChange={(e) => setFirstName(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="lastName" className="font-semibold text-[0.9rem] text-charcoal">Last Name</label>
-              <input type="text" id="lastName" placeholder="Doe" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+              <input type="text" id="lastName" placeholder="Doe" required value={lastName} onChange={(e) => setLastName(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
             <label htmlFor="email" className="font-semibold text-[0.9rem] text-charcoal">Email Address</label>
-            <input type="email" id="email" placeholder="jane@example.com" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+            <input type="email" id="email" placeholder="jane@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
           </div>
 
           <div className="flex flex-col gap-2">
             <label htmlFor="address" className="font-semibold text-[0.9rem] text-charcoal">Shipping Address</label>
-            <input type="text" id="address" placeholder="123 Sunny Lane" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+            <input type="text" id="address" placeholder="123 Sunny Lane" required value={address} onChange={(e) => setAddress(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
           </div>
 
           <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1">
             <div className="flex flex-col gap-2">
               <label htmlFor="city" className="font-semibold text-[0.9rem] text-charcoal">City</label>
-              <input type="text" id="city" placeholder="Seattle" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+              <input type="text" id="city" placeholder="Seattle" required value={city} onChange={(e) => setCity(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="state" className="font-semibold text-[0.9rem] text-charcoal">State</label>
-              <input type="text" id="state" placeholder="WA" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+              <input type="text" id="state" placeholder="WA" required value={state} onChange={(e) => setState(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6 max-md:grid-cols-1">
             <div className="flex flex-col gap-2">
               <label htmlFor="zip" className="font-semibold text-[0.9rem] text-charcoal">Zip Code</label>
-              <input type="text" id="zip" placeholder="98101" required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+              <input type="text" id="zip" placeholder="98101" required value={zip} onChange={(e) => setZip(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="phone" className="font-semibold text-[0.9rem] text-charcoal">Phone (optional)</label>
-              <input type="tel" id="phone" placeholder="(555) 123-4567" className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
+              <input type="tel" id="phone" placeholder="(555) 123-4567" value={phone} onChange={(e) => setPhone(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all" />
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
             <label htmlFor="notes" className="font-semibold text-[0.9rem] text-charcoal">Gift Message or Special Instructions</label>
-            <textarea id="notes" placeholder="Add a personal message or any special requests..." className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all resize-y min-h-[100px]" />
+            <textarea id="notes" placeholder="Add a personal message or any special requests..." value={notes} onChange={(e) => setNotes(e.target.value)} className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all resize-y min-h-[100px]" />
           </div>
 
           {/* Order Summary */}
@@ -121,8 +156,12 @@ function OrderForm() {
             </div>
           </div>
 
-          <button type="submit" className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 bg-sunset-orange text-white rounded-full font-semibold text-[1.05rem] border-none cursor-pointer hover:bg-terracotta hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(232,115,74,0.3)] transition-all">
-            <span>☀️</span> Complete Order
+          {error && (
+            <p className="text-red-600 text-sm text-center bg-red-50 p-3 rounded-xl">{error}</p>
+          )}
+
+          <button type="submit" disabled={loading} className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 bg-sunset-orange text-white rounded-full font-semibold text-[1.05rem] border-none cursor-pointer hover:bg-terracotta hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(232,115,74,0.3)] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+            <span>☀️</span> {loading ? "Redirecting to Payment..." : "Complete Order"}
           </button>
 
           <p className="text-[0.8rem] text-muted text-center italic">
