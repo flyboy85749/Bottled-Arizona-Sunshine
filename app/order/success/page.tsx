@@ -16,10 +16,16 @@ interface SessionInfo {
 function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const isPaypal = searchParams.get("paypal") === "1";
   const [info, setInfo] = useState<SessionInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (isPaypal) {
+      setInfo({ status: "paid", email: "", product: "", quantity: "", firstName: "" });
+      setLoading(false);
+      return;
+    }
     if (!sessionId) {
       setLoading(false);
       return;
@@ -30,7 +36,7 @@ function SuccessContent() {
         if (data.status === "paid") setInfo(data);
       })
       .finally(() => setLoading(false));
-  }, [sessionId]);
+  }, [sessionId, isPaypal]);
 
   if (loading) {
     return (
@@ -63,14 +69,20 @@ function SuccessContent() {
           Your Sunshine is On Its Way{info.firstName ? `, ${info.firstName}` : ""}!
         </h2>
         <p className="text-muted text-lg mb-6">
-          We&apos;ve bottled up some extra rays just for you. A confirmation has been sent to <strong>{info.email}</strong>.
+          {info.email ? (
+            <>We&apos;ve bottled up some extra rays just for you. A confirmation has been sent to <strong>{info.email}</strong>.</>
+          ) : (
+            <>We&apos;ve bottled up some extra rays just for you. A confirmation will be sent to your email shortly.</>
+          )}
         </p>
-        <div className="bg-white rounded-xl p-6 border border-desert-sand mb-8 text-left">
-          <h4 className="font-playfair text-[1.1rem] mb-2 text-charcoal font-semibold">Order Details</h4>
-          <p className="text-muted text-[0.95rem]">
-            {info.quantity}x {info.product === "single" ? "Single Bottle" : info.product === "4pack" ? "4-Pack Room Set" : "12-Pack Home Set"}
-          </p>
-        </div>
+        {info.product && (
+          <div className="bg-white rounded-xl p-6 border border-desert-sand mb-8 text-left">
+            <h4 className="font-playfair text-[1.1rem] mb-2 text-charcoal font-semibold">Order Details</h4>
+            <p className="text-muted text-[0.95rem]">
+              {info.quantity}x {info.product === "single" ? "Single Bottle" : info.product === "4pack" ? "4-Pack Room Set" : "12-Pack Home Set"}
+            </p>
+          </div>
+        )}
         <p className="text-muted text-sm italic mb-8">
           Please allow 3-5 business days for your sunshine to arrive. Results may vary depending on cloud cover in your area.
         </p>
