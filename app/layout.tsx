@@ -17,14 +17,21 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Arizona Bottled Sunshine | A Little Joy. A Lot of Sun.",
-  description: "Captured fresh from Arizona skies, our bottles deliver 100% pure desert sunshine to brighten your cloudiest days.",
+  title: "Bottled Arizona Sunshine | A Little Joy. A Lot of Sun.",
+  description:
+    "Captured fresh from Arizona skies, our bottles deliver 100% pure desert sunshine to brighten your cloudiest days.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${playfair.variable} ${dmSans.variable} font-dm-sans bg-warm-cream text-charcoal leading-relaxed overflow-x-hidden`}>
+      <body
+        className={`${playfair.variable} ${dmSans.variable} font-dm-sans bg-warm-cream text-charcoal leading-relaxed overflow-x-hidden`}
+      >
         <Header />
         {children}
         <Footer />

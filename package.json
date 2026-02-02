@@ -16,7 +16,9 @@
     "@paypal/paypal-server-sdk": "^2.2.0",
     "@paypal/react-paypal-js": "^8.9.2",
     "@stripe/stripe-js": "^8.7.0",
+    "@types/nodemailer": "^7.0.9",
     "next": "^16.1.6",
+    "nodemailer": "^7.0.13",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "stripe": "^20.3.0"

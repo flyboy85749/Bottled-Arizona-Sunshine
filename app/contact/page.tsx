@@ -1,13 +1,45 @@
 "use client";
 
+import { useState } from "react";
 import PageHero from "@/components/PageHero";
 import CTASection from "@/components/CTASection";
 
 export default function ContactPage() {
-  function handleSubmit(e: React.FormEvent) {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    alert("Thank you for reaching out! ☀️\n\nWe\u2019ll get back to you within 24 hours.");
-    (e.target as HTMLFormElement).reset();
+    setStatus("loading");
+    setErrorMsg("");
+
+    const form = e.target as HTMLFormElement;
+    const data = {
+      firstName: (form.elements.namedItem("firstName") as HTMLInputElement).value,
+      lastName: (form.elements.namedItem("lastName") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      subject: (form.elements.namedItem("subject") as HTMLSelectElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || "Something went wrong");
+      }
+
+      setStatus("success");
+      form.reset();
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to send message");
+      setStatus("error");
+    }
   }
 
   return (
@@ -58,8 +90,24 @@ export default function ContactPage() {
               <textarea id="message" placeholder="Tell us what's on your mind..." required className="font-dm-sans text-base p-3.5 border-2 border-desert-sand rounded-xl bg-white text-charcoal outline-none focus:border-sunset-orange focus:shadow-[0_0_0_3px_rgba(232,115,74,0.15)] transition-all resize-y min-h-25" />
             </div>
 
-            <button type="submit" className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 bg-sunset-orange text-white rounded-full font-semibold text-[1.05rem] border-none cursor-pointer hover:bg-terracotta hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(232,115,74,0.3)] transition-all">
-              <span>✉️</span> Send Message
+            {status === "success" && (
+              <div className="bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 text-center font-medium">
+                Thank you for reaching out! ☀️ We&apos;ll get back to you within 24 hours.
+              </div>
+            )}
+
+            {status === "error" && (
+              <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 text-center font-medium">
+                {errorMsg}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 bg-sunset-orange text-white rounded-full font-semibold text-[1.05rem] border-none cursor-pointer hover:bg-terracotta hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(232,115,74,0.3)] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+            >
+              {status === "loading" ? "Sending..." : <><span>✉️</span> Send Message</>}
             </button>
 
             <p className="text-[0.8rem] text-muted text-center italic">
